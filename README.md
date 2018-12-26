@@ -3,6 +3,14 @@
 A Flutter Android app that extracts motion photos out of the photos taken with
 Samsung Galaxy Camera.
 
+## Screenshots
+
+<p align="center">
+  <img alt="Welcome screen" src="docs/images/welcome.png" width="217">
+  <img alt="App running" src="docs/images/progress.png" width="217">
+  <img alt="Result" src="docs/images/result.jpg" width="446">
+</p>
+
 ## Motivation
 
 - Samsung Galaxy Camera app, since Galaxy S7, has a featured called **Motion

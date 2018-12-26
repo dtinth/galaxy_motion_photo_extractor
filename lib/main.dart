@@ -149,7 +149,10 @@ class _MyHomePageState extends State<MyHomePage> {
               }
             }
             if (found >= 0) {
-              File(mp4TargetPath).writeAsBytes(bytes.skip(found + 16).toList());
+              if (!dryRun) {
+                File(mp4TargetPath)
+                    .writeAsBytes(bytes.skip(found + 16).toList());
+              }
               extracted += 1;
             } else {
               notFound += 1;

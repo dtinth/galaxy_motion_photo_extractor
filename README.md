@@ -15,10 +15,11 @@ Samsung Galaxy Camera.
 
 - Samsung Galaxy Camera app, since Galaxy S7, has a featured called **Motion
   Photos**: When you take a photo it will also save 2 seconds video before you
-  press the shutter, an embed that video in the photo.
+  press the shutter, an embed that video in the photo. This is similar to
+  iPhone’s Live Photos, but without audio.
 
 - I use Google Photos to backup all my photos. However, when backing up using
-  the (free) high quality settings, **the motion photos a discarded.** That
+  the (free) high quality settings, **the motion photos are discarded.** That
   means if I use the “free up space” feature in Google Photos, my motion photos
   will be deleted forever. I don't want that.
 
@@ -28,6 +29,9 @@ Samsung Galaxy Camera.
 - There are existing scripts that help do this, but they are for running on
   computers, and requires transferring the photos from the phone over to the
   computer to be able to extract it.
+
+- Samsung’s Motion Photos are ~3 seconds of MP4 video at 12fps. So, instead of a
+  single shot you get about 40.
 
 - I want a solution that runs entirely on the phone.
 

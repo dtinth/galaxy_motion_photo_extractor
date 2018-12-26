@@ -11,17 +11,8 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo',
+      title: 'Galaxy Motion Photo Extractor',
       theme: ThemeData(
-        // This is the theme of your application.
-        //
-        // Try running your application with "flutter run". You'll see the
-        // application has a blue toolbar. Then, without quitting the app, try
-        // changing the primarySwatch below to Colors.green and then invoke
-        // "hot reload" (press "r" in the console where you ran "flutter run",
-        // or simply save your changes to "hot reload" in a Flutter IDE).
-        // Notice that the counter didn't reset back to zero; the application
-        // is not restarted.
         primarySwatch: Colors.green,
       ),
       home: MyHomePage(title: 'Galaxy Motion Photo Extractor'),
@@ -31,15 +22,6 @@ class MyApp extends StatelessWidget {
 
 class MyHomePage extends StatefulWidget {
   MyHomePage({Key key, this.title}) : super(key: key);
-
-  // This widget is the home page of your application. It is stateful, meaning
-  // that it has a State object (defined below) that contains fields that affect
-  // how it looks.
-
-  // This class is the configuration for the state. It holds the values (in this
-  // case the title) provided by the parent (in this case the App widget) and
-  // used by the build method of the State. Fields in a Widget subclass are
-  // always marked "final".
 
   final String title;
 
@@ -64,31 +46,37 @@ class _MyHomePageState extends State<MyHomePage> {
           children: <Widget>[
             Text(
               '$_status',
-              style: Theme.of(context).textTheme.display1,
+              style: TextStyle(fontSize: 20),
             ),
-            RaisedButton(
-                onPressed: running
-                    ? null
-                    : () {
-                        doit(false);
-                      },
-                child: Text('Dry Run')),
-            RaisedButton(
-                onPressed: running
-                    ? null
-                    : () {
-                        doit(false);
-                      },
-                child: Text('Do It for Real!')),
-            RaisedButton(
-                onPressed: !running && !cancellationRequested
-                    ? null
-                    : () {
-                        if (running) {
-                          cancellationRequested = true;
-                        }
-                      },
-                child: Text('Cancel'))
+            Padding(
+                padding: EdgeInsets.all(10),
+                child: Column(
+                  children: <Widget>[
+                    RaisedButton(
+                        onPressed: running
+                            ? null
+                            : () {
+                                doit(true);
+                              },
+                        child: Text('Dry Run')),
+                    RaisedButton(
+                        onPressed: running
+                            ? null
+                            : () {
+                                doit(false);
+                              },
+                        child: Text('Do It for Real!')),
+                    RaisedButton(
+                        onPressed: !running && !cancellationRequested
+                            ? null
+                            : () {
+                                if (running) {
+                                  cancellationRequested = true;
+                                }
+                              },
+                        child: Text('Cancel'))
+                  ],
+                )),
           ],
         ),
       ),
@@ -110,6 +98,7 @@ class _MyHomePageState extends State<MyHomePage> {
       int extracted = 0;
       int already = 0;
       int notFound = 0;
+      String previous = '';
       await for (var file in cameraDir.list()) {
         if (cancellationRequested) {
           setState(() {
@@ -124,9 +113,6 @@ class _MyHomePageState extends State<MyHomePage> {
           } else {
             var bytes = await File(file.path).readAsBytes();
             var found = -1;
-            setState(() {
-              _status = 'File is ${bytes.length} large';
-            });
             for (var i = 0; i < bytes.length - 16; i++) {
               if (bytes[i] == 'M'.codeUnitAt(0) &&
                   bytes[i + 1] == 'o'.codeUnitAt(0) &&
@@ -150,18 +136,25 @@ class _MyHomePageState extends State<MyHomePage> {
             }
             if (found >= 0) {
               if (!dryRun) {
-                File(mp4TargetPath)
-                    .writeAsBytes(bytes.skip(found + 16).toList());
+                await File(mp4TargetPath)
+                    .writeAsBytes(bytes.skip(found + 16).toList(), flush: true);
               }
               extracted += 1;
+              previous = '\n\nLast written: $mp4TargetPath';
             } else {
               notFound += 1;
             }
           }
+          if ((await File(mp4TargetPath).exists())) {
+            File(mp4TargetPath)
+                .setLastAccessedSync(File(file.path).lastAccessedSync());
+            File(mp4TargetPath)
+                .setLastModifiedSync(File(file.path).lastModifiedSync());
+          }
           scanned += 1;
           setState(() {
             _status =
-                'Scanned $scanned files, $extracted ${dryRun ? 'to extract' : 'extracted'}, $already already extracted, $notFound not found';
+                'Scanned $scanned files, $extracted ${dryRun ? 'to extract' : 'extracted'}, $already already extracted, $notFound not found$previous';
           });
         }
       }

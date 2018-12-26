@@ -22,3 +22,32 @@ Samsung Galaxy Camera.
   computer to be able to extract it.
 
 - I want a solution that runs entirely on the phone.
+
+## How to use
+
+1. [Install Flutter](https://flutter.io/docs/get-started/install).
+
+2. [Set up your environment for Flutter development](https://flutter.io/docs/get-started/editor?tab=vscode).
+
+3. Clone this depository
+
+4. `flutter run`
+
+5. You see the initial screen with the instructions.
+
+   - Press the **Dry Run** button to perform a dry run. This will scan all your
+     photos and report what would happen but will not write the video file.
+
+   - Press the **Do it for Real!** button to perform the batch video extraction
+     process.
+
+   - Press the **Cancel** button to abort the ongoing operation.
+
+## Notes
+
+- The app is hardcoded to process the `.jpg` files in
+  `(internal storage)/DCIM/Camera`. It does not work with the SD card.
+
+- This is my first ever app that’s written in Flutter. So the code may be very
+  ugly, and the app may buggy. **Use it at your own risk. I am not responsible
+  for any loss of data.**

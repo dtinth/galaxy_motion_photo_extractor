@@ -30,7 +30,8 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  String _status = 'Welcome, please press one of these buttons!';
+  String _status =
+      'Welcome! This app scans your photos in DCIM/Camera directory, an extracts the video files out of motion photos.\n\nPlease press one of these buttons!';
   bool running = false;
   bool cancellationRequested = false;
 

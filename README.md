@@ -41,7 +41,7 @@ Samsung Galaxy Camera.
 
 2. [Set up your environment for Flutter development](https://flutter.io/docs/get-started/editor?tab=vscode).
 
-3. Clone this depository
+3. Clone this repository
 
 4. `flutter run`
 

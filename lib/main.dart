@@ -48,7 +48,9 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  String _status = '';
+  String _status = 'Welcome, please press one of these buttons!';
+  bool running = false;
+  bool cancellationRequested = false;
 
   @override
   Widget build(BuildContext context) {
@@ -65,69 +67,104 @@ class _MyHomePageState extends State<MyHomePage> {
               style: Theme.of(context).textTheme.display1,
             ),
             RaisedButton(
-                onPressed: () async {
-                  if (!(await SimplePermissions.checkPermission(
-                      Permission.WriteExternalStorage))) {
-                    SimplePermissions.requestPermission(
-                        Permission.WriteExternalStorage);
-                  }
-                  Directory externalStorageDir =
-                      await getExternalStorageDirectory();
-                  Directory cameraDir =
-                      Directory(externalStorageDir.path + '/DCIM/Camera');
-                  await for (var file in cameraDir.list()) {
-                    if (file.path.endsWith('.jpg')) {
-                      if (file.path.endsWith('20181226_232123.jpg')) {
-                        var mp4TargetPath = file.path + '.mp4';
-                        if (!(await File(mp4TargetPath).exists())) {
-                          setState(() {
-                            _status = 'Hi!';
-                          });
-                          var bytes = await File(file.path).readAsBytes();
-                          var found = -1;
-                          setState(() {
-                            _status = 'File is ${bytes.length} large';
-                          });
-                          for (var i = 0; i < bytes.length - 16; i++) {
-                            if (bytes[i] == 'M'.codeUnitAt(0) &&
-                                bytes[i + 1] == 'o'.codeUnitAt(0) &&
-                                bytes[i + 2] == 't'.codeUnitAt(0) &&
-                                bytes[i + 3] == 'i'.codeUnitAt(0) &&
-                                bytes[i + 4] == 'o'.codeUnitAt(0) &&
-                                bytes[i + 5] == 'n'.codeUnitAt(0) &&
-                                bytes[i + 6] == 'P'.codeUnitAt(0) &&
-                                bytes[i + 7] == 'h'.codeUnitAt(0) &&
-                                bytes[i + 8] == 'o'.codeUnitAt(0) &&
-                                bytes[i + 9] == 't'.codeUnitAt(0) &&
-                                bytes[i + 10] == 'o'.codeUnitAt(0) &&
-                                bytes[i + 11] == '_'.codeUnitAt(0) &&
-                                bytes[i + 12] == 'D'.codeUnitAt(0) &&
-                                bytes[i + 13] == 'a'.codeUnitAt(0) &&
-                                bytes[i + 14] == 't'.codeUnitAt(0) &&
-                                bytes[i + 15] == 'a'.codeUnitAt(0)) {
-                              found = i;
-                              break;
-                            }
-                          }
-                          setState(() {
-                            _status = 'Found at $found';
-                          });
-                          if (found >= 0) {
-                            File(mp4TargetPath)
-                                .writeAsBytes(bytes.skip(found + 16).toList());
-                            setState(() {
-                              _status = 'Written';
-                            });
-                          }
+                onPressed: running
+                    ? null
+                    : () {
+                        doit(false);
+                      },
+                child: Text('Dry Run')),
+            RaisedButton(
+                onPressed: running
+                    ? null
+                    : () {
+                        doit(false);
+                      },
+                child: Text('Do It for Real!')),
+            RaisedButton(
+                onPressed: !running && !cancellationRequested
+                    ? null
+                    : () {
+                        if (running) {
+                          cancellationRequested = true;
                         }
-                      }
-                    }
-                  }
-                },
-                child: Text('Scan Images'))
+                      },
+                child: Text('Cancel'))
           ],
         ),
       ),
     );
+  }
+
+  void doit(bool dryRun) async {
+    setState(() {
+      running = true;
+    });
+    try {
+      if (!(await SimplePermissions.checkPermission(
+          Permission.WriteExternalStorage))) {
+        SimplePermissions.requestPermission(Permission.WriteExternalStorage);
+      }
+      Directory externalStorageDir = await getExternalStorageDirectory();
+      Directory cameraDir = Directory(externalStorageDir.path + '/DCIM/Camera');
+      int scanned = 0;
+      int extracted = 0;
+      int already = 0;
+      int notFound = 0;
+      await for (var file in cameraDir.list()) {
+        if (cancellationRequested) {
+          setState(() {
+            _status = 'Canceled.';
+          });
+          return;
+        }
+        if (file.path.endsWith('.jpg')) {
+          var mp4TargetPath = file.path + '.mp4';
+          if ((await File(mp4TargetPath).exists())) {
+            already += 1;
+          } else {
+            var bytes = await File(file.path).readAsBytes();
+            var found = -1;
+            setState(() {
+              _status = 'File is ${bytes.length} large';
+            });
+            for (var i = 0; i < bytes.length - 16; i++) {
+              if (bytes[i] == 'M'.codeUnitAt(0) &&
+                  bytes[i + 1] == 'o'.codeUnitAt(0) &&
+                  bytes[i + 2] == 't'.codeUnitAt(0) &&
+                  bytes[i + 3] == 'i'.codeUnitAt(0) &&
+                  bytes[i + 4] == 'o'.codeUnitAt(0) &&
+                  bytes[i + 5] == 'n'.codeUnitAt(0) &&
+                  bytes[i + 6] == 'P'.codeUnitAt(0) &&
+                  bytes[i + 7] == 'h'.codeUnitAt(0) &&
+                  bytes[i + 8] == 'o'.codeUnitAt(0) &&
+                  bytes[i + 9] == 't'.codeUnitAt(0) &&
+                  bytes[i + 10] == 'o'.codeUnitAt(0) &&
+                  bytes[i + 11] == '_'.codeUnitAt(0) &&
+                  bytes[i + 12] == 'D'.codeUnitAt(0) &&
+                  bytes[i + 13] == 'a'.codeUnitAt(0) &&
+                  bytes[i + 14] == 't'.codeUnitAt(0) &&
+                  bytes[i + 15] == 'a'.codeUnitAt(0)) {
+                found = i;
+                break;
+              }
+            }
+            if (found >= 0) {
+              File(mp4TargetPath).writeAsBytes(bytes.skip(found + 16).toList());
+              extracted += 1;
+            } else {
+              notFound += 1;
+            }
+          }
+          scanned += 1;
+          setState(() {
+            _status =
+                'Scanned $scanned files, $extracted ${dryRun ? 'to extract' : 'extracted'}, $already already extracted, $notFound not found';
+          });
+        }
+      }
+    } finally {
+      cancellationRequested = false;
+      running = false;
+    }
   }
 }

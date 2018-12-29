@@ -1,5 +1,5 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.galaxymotionphotoextractorflutter">
+    package="me.spacet.galaxymotionphotoextractor">
 
     <!-- The INTERNET permission is required for development. Specifically,
          flutter needs it to communicate with the running application
@@ -17,6 +17,9 @@
         android:name="io.flutter.app.FlutterApplication"
         android:label="Galaxy Motion Photo Extractor"
         android:icon="@mipmap/ic_launcher">
+        <meta-data
+            android:name="com.google.android.gms.ads.APPLICATION_ID"
+            android:value="ca-app-pub-3695878871927537~1638477004"/>
         <activity
             android:name=".MainActivity"
             android:launchMode="singleTop"

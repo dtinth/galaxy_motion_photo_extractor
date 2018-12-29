@@ -1,4 +1,4 @@
-package com.example.galaxymotionphotoextractorflutter;
+package me.spacet.galaxymotionphotoextractor;
 
 import android.os.Bundle;
 import io.flutter.app.FlutterActivity;

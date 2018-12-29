@@ -23,6 +23,7 @@ dependencies:
   path_provider: ^0.4.1
   simple_permissions: ^0.1.9
   exif: ^1.0.0
+  firebase_admob: ^0.5.5
 
 dev_dependencies:
   flutter_test:

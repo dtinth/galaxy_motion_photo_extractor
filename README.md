@@ -1,4 +1,4 @@
-# galaxy_motion_photo_extractor
+# Motion Photo Exploder for Galaxy
 
 A Flutter Android app that extracts motion photos out of the photos taken with
 Samsung Galaxy Camera.
@@ -63,3 +63,29 @@ Samsung Galaxy Camera.
 - This is my first ever app that’s written in Flutter. So the code may be very
   ugly, and the app may buggy. **Use it at your own risk. I am not responsible
   for any loss of data.**
+
+## App description (for Google Play Store)
+
+```
+Please read before installing this app...
+
+[Main functionality]
+Only 1 main feature is provided: It scans all the photos in `[Internal Storage]/DCIM/Camera/*.jpg`. If it finds an Motion Photo inside an image, it extracts the motion photo into a separate video file (.mp4).
+
+[Use case]
+I created this app because Google Photos does not retain motion photos when backing up using the free "High Resolution" setting. When I use Google Photo’s “Free Up Space” functionality, all motion photos will be lost forever.
+
+[Limitations]
+- It only supports internal storage. SD card is not supported.
+- It will extract all motion photos found in the camera. You cannot select which photo to extract or not extract.
+- Make sure your phone have enough available space! The app may write corrupt files if storage runs out.
+- I do not take feature requests, but I provide the source code for anyone to modify it for their own needs.
+- This app is provided as-is. Though I don't intend to cause any problem, I cannot guarantee the correctness of the app’s behavior. Please use at your own risk.
+
+[Source code available]
+I publish this app on the Play Store, in case other people who has the same problem may find it useful, but I do not plan to offer any support. However, this app is open source, and the code is available here: https://github.com/dtinth/galaxy_motion_photo_extractor
+```
+
+## Privacy policy
+
+Everything happens on your phone. No photo gets sent anywhere by this app.

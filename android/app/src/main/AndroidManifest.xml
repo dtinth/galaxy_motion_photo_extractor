@@ -15,7 +15,7 @@
          FlutterApplication and put your custom class here. -->
     <application
         android:name="io.flutter.app.FlutterApplication"
-        android:label="Galaxy Motion Photo Extractor"
+        android:label="Motion Photo Exploder for Galaxy"
         android:icon="@mipmap/launcher_icon">
         <meta-data
             android:name="com.google.android.gms.ads.APPLICATION_ID"

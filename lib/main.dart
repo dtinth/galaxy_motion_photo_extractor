@@ -12,11 +12,11 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Galaxy Motion Photo Extractor',
+      title: 'Motion Photo Exploder for Galaxy',
       theme: ThemeData(
         primarySwatch: Colors.green,
       ),
-      home: MyHomePage(title: 'Galaxy Motion Photo Extractor'),
+      home: MyHomePage(title: 'Motion Photo Exploder for Galaxy'),
     );
   }
 }

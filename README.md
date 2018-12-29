@@ -64,16 +64,31 @@ Samsung Galaxy Camera.
   ugly, and the app may buggy. **Use it at your own risk. I am not responsible
   for any loss of data.**
 
+## What’s with the name? Why "exploder"?
+
+Because the apps main functionality can be accomplished using a single line of
+PHP code, with the main ingredient being the function called
+[explode()](http://php.net/explode).
+
+```php
+<?php
+$path = '/path/to/image/file.jpg';
+file_put_contents($path . '.mp4', explode('MotionPhoto_Data', file_get_contents($path))[1]);
+```
+
 ## App description (for Google Play Store)
 
 ```
-Please read before installing this app...
+Please read before installing...
+
+[Compatibility]
+This app is intended for users of Samsung Galaxy phones that support Motion Photos feature. This includes Galaxy S9, S9+, Note8, S8, S8+, S7, and S7 edge.
 
 [Main functionality]
 Only 1 main feature is provided: It scans all the photos in `[Internal Storage]/DCIM/Camera/*.jpg`. If it finds an Motion Photo inside an image, it extracts the motion photo into a separate video file (.mp4).
 
 [Use case]
-I created this app because Google Photos does not retain motion photos when backing up using the free "High Resolution" setting. When I use Google Photo’s “Free Up Space” functionality, all motion photos will be lost forever.
+I created this app because Google Photos does not keep motion photos when backing up using the free "High Resolution" setting. When I use Google Photo’s “Free Up Space” functionality, all motion photos is lost forever.
 
 [Limitations]
 - It only supports internal storage. SD card is not supported.
@@ -89,3 +104,10 @@ I publish this app on the Play Store, in case other people who has the same prob
 ## Privacy policy
 
 Everything happens on your phone. No photo gets sent anywhere by this app.
+
+## Acknowledgements
+
+Thanks
+[@joemck for publishing the ExtractMotionPhotos project, which contains a _Description of Motion Photo File Format_](https://github.com/joemck/ExtractMotionPhotos#description-of-motion-photo-file-format)
+and
+[xda-developers user goofwear for having first published the initial file format description](https://forum.xda-developers.com/android/software/samsung-motion-photo-extractor-t3339997).
